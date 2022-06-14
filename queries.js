@@ -21,6 +21,22 @@ const queries = {
             else
                 console.table(res)
         })
+    },
+
+    viewRoles: function () {
+        db.query("SELECT * FROM role", function (err, res) {
+            if (err) throw err;
+            else
+                console.table(res)
+        })
+    },
+
+    viewEmployees: function () {
+        db.query("SELECT * FROM employee", function (err, res) {
+            if (err) throw err;
+            else
+                console.table(res)
+        })
     }
 }
 
