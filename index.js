@@ -2,7 +2,7 @@
 const consoleTable = require('console.table');
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
-const { viewDepartments, viewRoles, viewEmployees } = require('./queries.js');
+const { viewDepartments, viewRoles, viewEmployees, addDepartment, addRole } = require('./queries.js');
 const queries = require("./queries.js");
 
 
@@ -24,33 +24,54 @@ function startMenu() {
         {
             type: "list",
             name: "menuChoice",
-            message: "What would you like to do? (Use arrow keys)",
-            choices: ["View All Departments", "View All Roles", "View All Employees", "Add a Department", "Add A Role", "Add An Employee", "Update Employee Role", "Quit"]
+            message: "What would you like to do?",
+            choices: ["View All Departments", "View All Roles", "View All Employees", "Add a Department", "Add A Role", "Add An Employee", "Update Employee Role", "Quit"],
+            default: "Quit"
         }
+
     ])
 
         //render user choice
         .then(userChoice => {
             switch (userChoice.menuChoice) {
                 case "View All Departments":
-                    viewDepartments();
-                    startMenu();
+                    viewDepartments(db, startMenu);
                     break;
 
                 case "View All Roles":
-                    viewRoles();
-                    startMenu();
+                    viewRoles(db, startMenu);
                     break;
 
                 case "View All Employees":
-                    viewEmployees();
-                    startMenu();
+                    viewEmployees(db, startMenu);
+                    break;
+
+                case "Add a Department":
+                    addDepartment(db, startMenu);
+                    break;
+
+                case "Add A Role":
+                    addRole(db, startMenu);
+                    break;
+
+                case "Add An Employee":
+                    addEmployee(db, startMenu);
+                    break;
+
+                case "Update Employee Role":
+                    updateRole(db, startMenu);
                     break;
 
                 case "Quit":
-                    return;
+                    console.log("Good-bye!");
+                    db.end(function (err) {
+                        if (err) {
+                            return console.log("error:" + err.message);
+                        }
+                    })
                     break;
             }
         })
 }
 startMenu();
+
