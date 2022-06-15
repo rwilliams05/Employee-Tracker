@@ -2,7 +2,7 @@
 const consoleTable = require('console.table');
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
-const { viewDepartments, viewRoles, viewEmployees, addDepartment, addRole } = require('./queries.js');
+const { viewDepartments, viewRoles, viewAllEmployees, addDepartment, addRole, addEmployee, updateRole} = require('./queries.js');
 const queries = require("./queries.js");
 
 
@@ -25,7 +25,14 @@ function startMenu() {
             type: "list",
             name: "menuChoice",
             message: "What would you like to do?",
-            choices: ["View All Departments", "View All Roles", "View All Employees", "Add a Department", "Add A Role", "Add An Employee", "Update Employee Role", "Quit"],
+            choices: ["View All Departments",
+             "View All Roles", 
+             "View All Employees",
+              "Add a Department", 
+              "Add A Role", 
+              "Add An Employee",
+              "Update Employee Role",
+              "Quit"],
             default: "Quit"
         }
 
@@ -43,7 +50,7 @@ function startMenu() {
                     break;
 
                 case "View All Employees":
-                    viewEmployees(db, startMenu);
+                    viewAllEmployees(db, startMenu);
                     break;
 
                 case "Add a Department":
