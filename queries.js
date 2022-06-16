@@ -1,7 +1,9 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 
+//contains all queries
 const queries = {
+    //allows user to view all departments
     viewDepartments: function (db, startMenu) {
         db.query("SELECT * FROM department", function (err, res) {
             if (err) throw err;
@@ -10,7 +12,7 @@ const queries = {
             startMenu();
         })
     },
-
+//allows user to view alll roles
     viewRoles: function (db, startMenu) {
         db.query("SELECT * FROM role", function (err, res) {
             if (err) throw err;
@@ -19,7 +21,7 @@ const queries = {
             startMenu();
         })
     },
-
+// allows user to view all collected information about all employees
     viewAllEmployees: function (db, startMenu) {
         db.query("SELECT employee.id as employeeID, employee.first_name as first_name, employee.last_name as last_name, role.title as role, role.salary as salary, department.name as dept_name, manager.first_name as managerFN, manager.last_name as managerLN FROM employee LEFT JOIN role ON employee.role_id=role.id LEFT JOIN department on role.department_id=department.id LEFT JOIN employee AS manager ON employee.manager_id= manager.id", function (err, res) {
             if (err) throw err;
@@ -28,9 +30,9 @@ const queries = {
             startMenu();
         })
     },
-
+//allows user to add a new department
     addDepartment: function (db, startMenu) {
-
+//collects user's input
         inquirer.prompt([
             {
                 type: "input",
@@ -39,6 +41,7 @@ const queries = {
             }
 
         ])
+        //inserts data into department table
             .then(answer => {
                 const name = answer.deptChoice;
                 db.query("INSERT INTO department (name)  VALUES (?)", [name], function (err, res) {
@@ -49,9 +52,10 @@ const queries = {
                 })
             })
     },
-
+//allows user to add a role
     addRole: function (db, startMenu) {
 
+//collects user input
         inquirer.prompt([
             {
                 type: "input",
@@ -72,6 +76,7 @@ const queries = {
             }
 
         ])
+        //inserts user input in to role table
             .then(answer => {
                 const title = answer.roleChoice;
                 const salary = answer.roleSalary;
@@ -84,9 +89,9 @@ const queries = {
                 })
             })
     },
-
+//allows user to add a new employee
     addEmployee: function (db, startMenu) {
-
+//collects user input
         inquirer.prompt([
             {
                 type: "input",
@@ -110,6 +115,8 @@ const queries = {
             }
 
         ])
+
+        //inserts new employee info into employee table
             .then(answer => {
                 const first_name = answer.firstName;
                 const last_name = answer.lastName;
@@ -125,8 +132,10 @@ const queries = {
 
 
     },
-    updateRole: function (db, startMenu) {
 
+    //alows user to update an employee's role
+    updateRole: function (db, startMenu) {
+//collects user input
         inquirer.prompt([
             {
                 type: "input",
@@ -141,6 +150,8 @@ const queries = {
             }
 
         ])
+
+        //adds updated info to employee table
             .then(answer => {
                 const empID = answer.employeeChoice;
                 const newRole = answer.newRole;
@@ -153,5 +164,6 @@ const queries = {
     },
 
 }
+//exports contents so it can be used by other files
 module.exports = queries
 
