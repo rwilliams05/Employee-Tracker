@@ -12,7 +12,7 @@ const queries = {
             startMenu();
         })
     },
-//allows user to view alll roles
+//allows user to view all roles
     viewRoles: function (db, startMenu) {
         db.query("SELECT * FROM role", function (err, res) {
             if (err) throw err;
